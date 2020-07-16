@@ -19,3 +19,8 @@ select * from CompOff join Competence on Competence.id=CompOff.idCompetence
 join Offre on Offre.id=CompOff.idOffre 
 where idOffre='1a71489e9da93bb69fe1d0a84d471627'
 */
+
+/* récupére les relances que l'utilisateur n'as pas encore relancé
+select * from Candidature join Utilisateur on Utilisateur.id=Candidature.idUtilisateur
+where dateRelance<=current_date and relance=false and idUtilisateur='4'
+*/
