@@ -4,6 +4,8 @@ drop table if exists Offre cascade;
 drop table if exists Candidature cascade;
 drop table if exists Competence cascade;
 drop table if exists CompOff cascade;
+drop table if exists Connexion cascade;
+drop table if exists Entretien cascade;
 
 create table Utilisateur (
 id serial primary key,
@@ -25,7 +27,11 @@ create table Offre(
 	id text primary key,
 	poste text not null,
 	nomEntreprise text not null,
-	url text not null
+	url text not null,
+	nomContact text,
+	fonctionContact text,
+	telContact text,
+	emailContact text
 );
 
 create table Candidature(
@@ -53,6 +59,23 @@ create table CompOff(
 	foreign key(idCompetence) references Competence(id),
 	primary key(idCompetence, idOffre)
 );
+create table Connexion(
+	idConnexion serial primary key,
+	idUtilisateur int,
+	dateConnexion date not null,
+	foreign key(idUtilisateur) references Utilisateur(id)
+);
+
+create table Entretien(
+	idEntretien serial primary key,
+	idUtilisateur int,
+	idOffre text,
+	dateEntretien date not null,
+	typeEntretien text not null,
+	foreign key(idUtilisateur,idOffre) references Candidature(idUtilisateur,idOffre)
+);
+
+
 
 INSERT INTO Utilisateur(nom, email, delaiFixe, motDePasse) VALUES  
  ('Dorothée Pottier', 'marcel.mahe@noos.fr', '0', '9UR>q&SUzZxxG&LN}'), 
@@ -73,9 +96,11 @@ INSERT INTO DelaiFixe (idUtilisateur,duree) VALUES
 ('4','10') ;
 
 
+INSERT INTO Offre VALUES
+('8208c06de074317f97759a8a89273594', 'Etancheur', 'Albert', 'http://chauvet.org/consecteturmolestiaeetoptiodistinctio.html','andré simon','Directeur des ressources humaines','0708091011','andre.simon@chauvet.org');
 
-INSERT INTO Offre (id, poste, nomEntreprise, url) VALUES 
-('8208c06de074317f97759a8a89273594', 'Etancheur', 'Albert', 'http://chauvet.org/consecteturmolestiaeetoptiodistinctio.html'), 
+
+INSERT INTO Offre (id, poste, nomEntreprise, url) VALUES  
  ('97eb48793051342b86ef121e022c037e', 'Chef des ventes', 'Lejeune', 'http://www.rolland.fr/'), 
  ('170730306317311d81b9d16c7aa2b1fe', 'Plasticien', 'Lefebvre SA', 'https://www.marin.com/commodilaboriosamautetutetmollitiaautnulla'), 
  ('742fef19d5d431c2b79475b1289444ce', 'Testeur informatique', 'Fleury Gilbert SARL', 'http://www.michaud.fr/optiominusetautincidunt'), 
@@ -177,7 +202,6 @@ INSERT INTO Offre (id, poste, nomEntreprise, url) VALUES
  ('5e84fe13ca9d36f18b43512c080aa30a', 'Diététicien conseil', 'Aubry Joseph SAS', 'http://www.jourdan.com/repellatdictaveritatisenimprovidentofficianonreiciendis');
 
 
-
 Insert into Competence(intitule) Values
 ( 'Gestion de trésorerie '),
 ( 'Gestion de stock '),
@@ -197,11 +221,16 @@ Insert into Candidature(idUtilisateur,idOffre,dateCandidature,dateRelance,dureeR
 ('2','61b81235829230829ed825ecd05f30a9','8/07/2020','23/07/2020','15','accepté'),
 ('4','61b81235829230829ed825ecd05f30a9','10/07/2020','20/07/2020','10','refusé'),
 ('8','a7776fbd8a3f31539293f6c98c8c03e0','18/07/2020','28/07/2020','10','en attente'),
-('8','f1242eef9a11332693ad4537695f16ed','13/07/2020','28/07/2020','15','en attente');
+('8','f1242eef9a11332693ad4537695f16ed','13/06/2020','28/06/2020','15','refusé');
 
 
+INSERT INTO Connexion(idUtilisateur,dateConnexion) values
+('1','25/06/2020'),
+('1','16/07/2020'),
+('4','15/07/2020');
 
-
-
+INSERT INTO Entretien(idUtilisateur,idOffre,dateEntretien,typeEntretien) values
+('8','f1242eef9a11332693ad4537695f16ed','29/06/2020','telephonique'),
+('2','61b81235829230829ed825ecd05f30a9','25/07/2020','individuel');
 
 
