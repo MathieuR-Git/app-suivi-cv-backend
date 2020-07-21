@@ -6,6 +6,10 @@ node_modules/*
 /.pnp
 .pnp.js
 
+# local env files
+.env.local
+.env.*.local
+
 # testing
 /coverage
 

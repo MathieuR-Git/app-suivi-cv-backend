@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const database = require("../db/db");
-
+const token = require("./token");
 /*
  * Start of signup
  */
@@ -66,20 +66,29 @@ const createUser = (user) => {
  */
 const signin = (request, response) => {
   const userReq = request.body;
-  let token;
-
+  let myToken;
+  let user;
   findUser(userReq)
     .then((foundUser) => {
-      console.log(("lol :", foundUser));
+      user = foundUser;
       return checkPassword(userReq.password, foundUser);
     })
     .then(() =>
-      createToken(userReq).then((token) => {
-        token = token;
-      })
+      token
+        .createToken(userReq)
+        //createToken(userReq)
+        .then((token) => {
+          myToken = token;
+        })
     )
     .then(() => {
-      response.status(200).json("c'est bon");
+      let userRes = {
+        id: user.id,
+        nom: user.nom,
+        email: user.email,
+        delaiFixe: user.delaifixe,
+      };
+      response.status(200).json({ user: userRes, token: myToken });
     })
     .catch((err) =>
       response.status(400).json({ error: "Le mot de passe ne correspond pas." })
@@ -109,19 +118,6 @@ const checkPassword = (reqPassword, foundUser) => {
 /**
  * End of signing
  */
-
-const createToken = (user) => {
-  return new Promise((resolve, reject) => {
-    jwt.sign(
-      { userEmail: user.email },
-      process.env.TOKEN || "lol",
-      { expiresIn: "72h" },
-      (error, token) => {
-        error ? reject(error) : resolve(token);
-      }
-    );
-  });
-};
 
 module.exports = {
   signup,
