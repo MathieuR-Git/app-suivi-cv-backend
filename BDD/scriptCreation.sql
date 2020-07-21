@@ -268,3 +268,22 @@ $change_duree_delai_fixe$ language plpgsql;
 
 create trigger change_duree_delai_fixe after insert or update on DelaiFixe for each row 
 execute procedure change_duree_delai_fixe();
+
+/* calcule la date de relance selon la durée de la relance*/
+drop trigger if exists calc_date_relance on Candidature;
+drop function if exists calc_date_relance();
+
+create function calc_date_relance() returns trigger as $calc_date_relance$
+begin 
+if 
+/* si je n'ai pas de duree de relance cela prend notre durée de relance fixe*/
+new.dureeRelance is null then
+new.dureeRelance:=(select duree from delaiFixe where idUtilisateur= new.idUtilisateur);
+end if;
+new.dateRelance:= new.dateCandidature+(new.DureeRelance*interval'1 day');
+return new;
+end;
+$calc_date_relance$ language plpgsql;
+
+create trigger calc_date_relance before insert  on Candidature for each row 
+execute procedure calc_date_relance();
