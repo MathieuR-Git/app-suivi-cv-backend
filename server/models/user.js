@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const database = require("../db/db");
 
 /*
@@ -7,19 +8,37 @@ const database = require("../db/db");
  */
 const signup = (request, response) => {
   const user = request.body;
+  var tokenSave;
+
+  //check if delaiFixe exists
+  if (
+    !user.delaiFixe ||
+    user.delaiFixe === undefined ||
+    user.delaiFixe === null
+  ) {
+    user.delaiFixe = true;
+  }
+
   hashPassword(user.password)
     .then((hashedPassword) => {
-      delete user.password;
-      user.password_digest = hashedPassword;
+      user.password = hashedPassword;
     })
-    .then(() => createToken())
-    .then((token) => (user.token = token))
     .then(() => createUser(user))
-    .then((user) => {
-      delete user.password_digest;
-      response.status(201).json({ user });
+    .then(() =>
+      createToken(user.email).then((token) => {
+        tokenSave = token;
+      })
+    )
+    .then(() => {
+      response.status(201).json({ email: user.email, token: tokenSave });
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      err.code === "23505"
+        ? response
+            .status(400)
+            .json({ error: "Cette adresse email est déjà utilisée." })
+        : null;
+    });
 };
 
 const hashPassword = (password) => {
@@ -33,26 +52,12 @@ const hashPassword = (password) => {
 const createUser = (user) => {
   return database
     .query(
-      "INSERT INTO users (firstname, lastname, email, password_digest, token, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
-      [
-        user.firstname,
-        user.lastname,
-        user.email,
-        user.password_digest,
-        user.token,
-        new Date(),
-      ]
+      "INSERT INTO Utilisateur (nom, email, delaiFixe, motDePasse) VALUES ($1, $2, $3, $4)",
+      [user.name, user.email, user.delaiFixe, user.password]
     )
     .then((data) => data.rows[0]);
 };
 
-const createToken = () => {
-  return new Promise((resolve, reject) => {
-    crypto.randomBytes(16, (err, data) => {
-      err ? reject(err) : resolve(data.toString("base64"));
-    });
-  });
-};
 /*
  *End of signup
  */
@@ -62,32 +67,35 @@ const createToken = () => {
  */
 const signin = (request, response) => {
   const userReq = request.body;
-  let user;
+  let token;
 
   findUser(userReq)
     .then((foundUser) => {
-      console.log(foundUser);
-      user = foundUser;
+      console.log(("lol :", foundUser));
       return checkPassword(userReq.password, foundUser);
     })
-    .then((res) => createToken())
-    .then((token) => updateUserToken(token, user))
+    .then(() =>
+      createToken(userReq).then((token) => {
+        token = token;
+      })
+    )
     .then(() => {
-      delete user.password_digest;
-      response.status(200).json(user);
+      response.status(200).json("c'est bon");
     })
-    .catch((err) => console.error(err));
+    .catch((err) =>
+      response.status(400).json({ error: "Le mot de passe ne correspond pas." })
+    );
 };
 
 const findUser = (userReq) => {
   return database
-    .query("SELECT * FROM users WHERE email = $1", [userReq.email])
+    .query("SELECT * FROM Utilisateur WHERE email = $1", [userReq.email])
     .then((data) => data.rows[0]);
 };
 
 const checkPassword = (reqPassword, foundUser) => {
   return new Promise((resolve, reject) =>
-    bcrypt.compare(reqPassword, foundUser.password_digest, (err, response) => {
+    bcrypt.compare(reqPassword, foundUser.motdepasse, (err, response) => {
       if (err) {
         reject(err);
       } else if (response) {
@@ -99,16 +107,23 @@ const checkPassword = (reqPassword, foundUser) => {
   );
 };
 
-const updateUserToken = (token, user) => {
-  return database
-    .query("UPDATE users SET token = $1 WHERE id = $2", [token, user.id])
-    .then((data) => data.rows[0]);
-};
 /**
  * End of signing
  */
 
-// don't forget to export!
+const createToken = (user) => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      { userEmail: user.email },
+      process.env.TOKEN || "lol",
+      { expiresIn: "72h" },
+      (error, token) => {
+        error ? reject(error) : resolve(token);
+      }
+    );
+  });
+};
+
 module.exports = {
   signup,
   signin,

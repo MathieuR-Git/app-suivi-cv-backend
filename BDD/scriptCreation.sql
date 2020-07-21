@@ -10,7 +10,7 @@ drop table if exists Entretien cascade;
 create table Utilisateur (
 id serial primary key,
 nom text not null,
-email text not null,
+email text not null unique,
 delaiFixe boolean not null,
 motDePasse text not null	
 );
