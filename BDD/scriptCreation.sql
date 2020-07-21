@@ -234,4 +234,37 @@ INSERT INTO Entretien(idUtilisateur,idOffre,dateEntretien,typeEntretien) values
 ('8','f1242eef9a11332693ad4537695f16ed','29/06/2020','telephonique'),
 ('2','61b81235829230829ed825ecd05f30a9','25/07/2020','individuel');
 
+/* supprime la ligne d'un utilisateur dans delai fixe si il passe d'un delai fixe a un delai flexible*/
+drop trigger if exists change_delai_fixe on Utilisateur;
+drop function if exists change_delai_fixe();
 
+create function change_delai_fixe() returns trigger as $change_delai_fixe$
+begin 
+if new.delaiFixe=false then
+delete from DelaiFixe
+where idUtilisateur= new.id;
+end if;
+return null;
+end;
+$change_delai_fixe$ language plpgsql;
+
+create trigger change_delai_fixe after update on Utilisateur for each row 
+execute procedure change_delai_fixe();
+
+
+
+/*change les dates de relance + durée de relance des candidatures d'un utilisteur quand il change son delai fixe*/
+drop trigger if exists change_duree_delai_fixe on delaiFixe;
+drop function if exists change_duree_delai_fixe();
+
+create function change_duree_delai_fixe() returns trigger as $change_duree_delai_fixe$
+begin 
+update  Candidature 
+set dureeRelance=new.duree , dateRelance= dateCandidature+(new.duree* interval '1 day')
+where idUtilisateur=new.idUtilisateur;
+return null;
+end;
+$change_duree_delai_fixe$ language plpgsql;
+
+create trigger change_duree_delai_fixe after insert or update on DelaiFixe for each row 
+execute procedure change_duree_delai_fixe();
