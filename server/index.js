@@ -17,10 +17,8 @@ app.use(cors());
 app.use("/v1", router);
 app.use("/v1/auth", userRouter);
 
-require("dotenv").config();
-
 let server = app.listen(port, "localhost", () => {
   let host = server.address().address,
     port = server.address().port;
-  console.log("Example app listening at http://%s:%s", host, port);
+  console.log("Backend sur l'addresse : http://%s:%s", host, port);
 });

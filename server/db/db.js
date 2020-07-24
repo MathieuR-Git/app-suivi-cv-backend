@@ -1,12 +1,15 @@
-const Pool = require("pg").Pool;
+require("dotenv").config();
+
+const { Pool } = require("pg");
+const isProduction = process.env.NODE_ENV === "production";
+
+const connectionString = `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
 
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "suivi-cv",
-  password: "reversez",
-  port: 5432,
+  connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
+  ssl: isProduction,
 });
+
 // const pool = new Pool({
 //   user: "sogfnjyt",
 //   host:
