@@ -15,30 +15,37 @@ const createToken = (user) => {
   });
 };
 
-const checkToken = (req, res) => {
-  const headers = req.headers.authorization;
-  const token = headers.replace("Bearer ", "");
+// const checkToken = (req, res) => {
+//   const headers = req.headers.authorization;
+//   const token = headers.replace("Bearer ", "");
 
+//   return new Promise((resolve, reject) => {
+//     jwt.verify(token, process.env.TOKEN, (err, decoded) => {
+//       if (err) {
+//         reject(err);
+//       } else if (decoded) {
+//         var userValues;
+//         DB.query("SELECT * FROM Utilisateur WHERE email = $1", [decoded.email])
+//           .then((data) => (userValues = data.rows[0]))
+//           .then(() => {
+//             let userRes = {
+//               id: userValues.id,
+//               nom: userValues.nom,
+//               email: userValues.email,
+//               delaiFixe: userValues.delaifixe,
+//             };
+//             res.status(200).json({ user: userRes });
+//           });
+//       } else {
+//         reject(new Error("Error occured during verifying token"));
+//       }
+//     });
+//   });
+// };
+const checkToken = (req, res) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.TOKEN, (err, decoded) => {
-      if (err) {
-        reject(err);
-      } else if (decoded) {
-        var userValues;
-        DB.query("SELECT * FROM Utilisateur WHERE email = $1", [decoded.email])
-          .then((data) => (userValues = data.rows[0]))
-          .then(() => {
-            let userRes = {
-              id: userValues.id,
-              nom: userValues.nom,
-              email: userValues.email,
-              delaiFixe: userValues.delaifixe,
-            };
-            res.status(200).json({ user: userRes });
-          });
-      } else {
-        reject(new Error("Error occured during verifying token"));
-      }
+      err ? reject(err) : resolve(decoded);
     });
   });
 };

@@ -1,10 +1,14 @@
 const express = require("express"),
   userRouter = express.Router();
-const User = require("../models/user");
+const Login = require("../models/login");
+const Register = require("../models/register");
 const token = require("../models/token");
 
-userRouter.post("/signup", User.signup);
-userRouter.post("/login", User.signin);
+/**
+ * LISTING ALL ROUTES
+ */
+userRouter.post("/signup", Register.signup);
+userRouter.post("/login", Login.signin);
 userRouter.post("/checkToken", token.checkToken);
 
 module.exports = userRouter;
