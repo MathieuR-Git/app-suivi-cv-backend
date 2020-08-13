@@ -9,15 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nom: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       delaiFixe: {
         type: Sequelize.BOOLEAN
       },
       motDePasse: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {

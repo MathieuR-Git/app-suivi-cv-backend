@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.utilisateur.hasOne(models.delaifixe);
+      models.utilisateur.hasMany(models.connexion);
+      models.utilisateur.hasMany(models.candidature);
     }
   };
   Utilisateur.init({

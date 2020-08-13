@@ -1,4 +1,7 @@
 'use strict';
+
+const utilisateur = require("../models/utilisateur");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('DelaiFixes', {
@@ -9,9 +12,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       idUtilisateur: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references:{
+          model:'utilisateur',
+          key:'id'
+        },
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE'
       },
       duree: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {

@@ -9,12 +9,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       poste: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       nomEntreprise: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       url: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       nomContact: {

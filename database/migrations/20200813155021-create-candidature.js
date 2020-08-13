@@ -5,14 +5,25 @@ module.exports = {
       idUtilisateur: {
         type: Sequelize.INTEGER,
         allowNull:false,
-        primaryKey:true
+        references:{
+          model:'utilisateur',
+          key:'id'
+        },
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE'
       },
       idOffre: {
         type: Sequelize.STRING,
         allowNull:false,
-        primaryKey:true
+        references:{
+          model:'offre',
+          key:'id'
+        },
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE'
       },
       dateCandidature: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       dateRelance: {
@@ -22,6 +33,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       statut: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       relance: {
@@ -35,7 +47,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
+    .then(()=>{
+      queryInterface.addConstraint('Candidatures',['idUtilisateur','idOffre'],{
+        type:'primary key',
+        name:'candidatures_pkey'
+      })
+    })
+    ;
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Candidatures');
