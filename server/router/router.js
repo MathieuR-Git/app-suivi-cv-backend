@@ -1,11 +1,12 @@
 const express = require("express"),
   router = express.Router();
 const pool = require("../db/db");
-
 router.get("/", (req, response) => {
-  pool.query("SELECT * FROM Users", (error, results) => {
+  pool.query("SELECT * FROM utilisateur", (error, results) => {
     if (error) {
+      console.log(error);
       throw error;
+      
     }
     response.status(200).json(results.rows);
   });

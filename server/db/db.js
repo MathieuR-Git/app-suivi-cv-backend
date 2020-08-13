@@ -9,7 +9,6 @@ const pool = new Pool({
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
   ssl: isProduction,
 });
-
 // const pool = new Pool({
 //   user: "sogfnjyt",
 //   host:
@@ -18,5 +17,5 @@ const pool = new Pool({
 //   password: "0EWuiAq3SHWrPlmj-si1kmNwinkejrvA",
 //   port: 5432,
 // });
-
+// console.log(pool)
 module.exports = pool;
