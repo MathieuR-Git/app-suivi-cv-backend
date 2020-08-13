@@ -12,6 +12,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.candidature.hasOne(models.entretien);
+      models.candidature.belongsTo(models.Offre,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
+      models.candidature.belongsTo(models.utilisateur,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
     }
   };
   Candidature.init({

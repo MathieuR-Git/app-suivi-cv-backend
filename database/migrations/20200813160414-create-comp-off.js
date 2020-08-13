@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     }).then(()=>{
-      queryInterface.addConstraint('CompOff',['idCompetence','idOffre'],{
+      queryInterface.addConstraint('CompOffs',['idCompetence','idOffre'],{
         type:'primary key',
         name:'compoff_pkey'
       })

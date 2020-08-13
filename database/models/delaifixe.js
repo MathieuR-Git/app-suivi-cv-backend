@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.DelaiFixe.belongsTo(models.Utilisateur,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
     }
   };
   DelaiFixe.init({

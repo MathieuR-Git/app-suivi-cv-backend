@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.entretien.belongsTo(models.Candidature,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
     }
   };
   Entretien.init({

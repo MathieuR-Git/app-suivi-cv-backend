@@ -11,6 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.CompOff.belongsTo(models.Offre,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
+      models.CompOff.belongsTo(model.Competences,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
     }
   };
   CompOff.init({

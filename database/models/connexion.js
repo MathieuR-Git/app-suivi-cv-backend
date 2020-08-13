@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.connexion.belongsTo(models.Utilisateur,{
+        foreignKey:{
+          allowNull:false
+        }
+      });
     }
   };
   Connexion.init({
