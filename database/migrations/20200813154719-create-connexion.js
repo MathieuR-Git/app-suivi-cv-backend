@@ -12,21 +12,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references:{
-          model:'utilisateur',
+          model:'Utilisateur',
           key:'id'
         },
         onDelete:'CASCADE',
         onUpdate:'CASCADE'
       },
       dateConnexion: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

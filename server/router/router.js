@@ -1,15 +1,8 @@
 const express = require("express"),
   router = express.Router();
-const pool = require("../db/db");
+const db = require("../../database/models");
 router.get("/", (req, response) => {
-  pool.query("SELECT * FROM utilisateur", (error, results) => {
-    if (error) {
-      console.log(error);
-      throw error;
-      
-    }
-    response.status(200).json(results.rows);
-  });
+  db.Utilisateur.findAll().then((result) =>response.send(result));
 });
 
 router.get("/editUser/:id", (req, response) => {
@@ -17,5 +10,15 @@ router.get("/editUser/:id", (req, response) => {
   console.log(id);
   response.status(200).send("Coucou");
 });
+
+router.post("/inscription",(req,response)=>{
+  db.Utilisateur.create({
+    nom: req.body.nom,
+    email: req.body.email,
+    delaiFixe: false,
+    motDePasse:req.body.motDePasse
+  }).then(utilisateurCree=>response.send(utilisateurCree))
+})
+
 
 module.exports = router;

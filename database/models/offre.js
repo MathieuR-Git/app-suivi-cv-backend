@@ -2,7 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const candidature = require('./candidature');
 module.exports = (sequelize, DataTypes) => {
   class Offre extends Model {
     /**
@@ -12,12 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.offre.hasMany(models.candidature);
-      models.offre.hasMany(models.compoff);
+      models.Offre.hasMany(models.Candidature);
+      models.Offre.hasMany(models.CompOff);
     }
   };
   Offre.init({
-    id: DataTypes.STRING,
     poste: DataTypes.STRING,
     nomEntreprise: DataTypes.STRING,
     url: DataTypes.STRING,

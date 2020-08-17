@@ -14,7 +14,8 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       delaiFixe: {
         type: Sequelize.BOOLEAN
@@ -22,14 +23,6 @@ module.exports = {
       motDePasse: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },

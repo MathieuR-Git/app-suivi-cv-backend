@@ -12,8 +12,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false,
         references:{
-          model:'utilisateur',
-          key:'id'
+          model:'Candidature',
+          key:'idUtilisateur'
         },
         onDelete:'CASCADE',
         onUpdate:'CASCADE'
@@ -22,8 +22,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull:false,
         references:{
-          model:'offre',
-          key:'id'
+          model:'Candidature',
+          key:'idOffre'
         },
         onDelete:'CASCADE',
         onUpdate:'CASCADE'
@@ -35,14 +35,6 @@ module.exports = {
       typeEntretien: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },

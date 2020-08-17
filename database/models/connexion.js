@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.connexion.belongsTo(models.Utilisateur,{
+      models.Connexion.belongsTo(models.Utilisateur,{
         foreignKey:{
           allowNull:false
         }

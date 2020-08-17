@@ -11,9 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.entretien.belongsTo(models.Candidature,{
+     models.Entretien.belongsTo(models.Candidature,{
         foreignKey:{
-          allowNull:false
+          allowNull:false,
+
         }
       });
     }

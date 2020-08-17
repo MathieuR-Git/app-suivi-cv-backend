@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
           allowNull:false
         }
       });
-      models.CompOff.belongsTo(model.Competences,{
+      models.CompOff.belongsTo(models.Competence,{
         foreignKey:{
           allowNull:false
         }

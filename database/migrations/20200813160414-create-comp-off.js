@@ -7,7 +7,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false,
         references:{
-          model:'competence',
+          model:'Competence',
           key:'id'
         },
         onDelete:'CASCADE',
@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull:false,
        references:{
-         model:'offre',
+         model:'Offre',
          key:'id'
        },
        onDelete:'CASCADE',
@@ -26,14 +26,6 @@ module.exports = {
       niveau: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     }).then(()=>{
       queryInterface.addConstraint('CompOffs',['idCompetence','idOffre'],{

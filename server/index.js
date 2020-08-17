@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const db=require('../database/models');
 app = express();
 
 //extract PORT number
@@ -17,8 +17,10 @@ app.use(cors());
 app.use("/v1", router);
 app.use("/v1/auth", userRouter);
 
+db.sequelize.sync().then(() =>{
 let server = app.listen(port, "localhost", () => {
   let host = server.address().address,
     port = server.address().port;
   console.log("Backend sur l'addresse : http://%s:%s", host, port);
+});
 });
