@@ -275,12 +275,12 @@ begin
 if 
 /* si je n'ai pas de duree de relance cela prend notre durée de relance fixe*/
 new."dureeRelance" is null then
-new."dureeRelance":=(select duree from "delaiFixes" where "idUtilisateur"= "new.idUtilisateur");
+new."dureeRelance":=(select duree from "delaiFixes" where "idUtilisateur"= new."idUtilisateur");
 end if;
-new."dateRelance":= new."dateCandidature"+("new.DureeRelance"*interval'1 day');
+new."dateRelance":= new."dateCandidature"+(new."DureeRelance"*interval'1 day');
 return new;
 end;
 $calc_date_relance$ language plpgsql;
 
-create trigger calc_date_relance before insert  on "Candidatures" for each row 
+create  trigger calc_date_relance before insert  on "Candidatures" for each row 
 execute procedure calc_date_relance();

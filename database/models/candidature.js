@@ -13,22 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
      models.Candidature.hasOne(models.Entretien);
       models.Candidature.belongsTo(models.Offre,{
-        foreignKey:{
-           name:'idOffre',
-          allowNull:false
-        }
+        foreignKey:'idOffre'
       });
       models.Candidature.belongsTo(models.Utilisateur,{
-        foreignKey:{
-          name:'idUtilisateur',
-          allowNull:false
-        }
+        foreignKey:"idUtilisateur"
       });
     }
   };
   Candidature.init({
-    idUtilisateur: DataTypes.INTEGER,
-    idOffre: DataTypes.STRING,
+    idUtilisateur:{ 
+      type: DataTypes.INTEGER,
+    primaryKey:true},
+    idOffre: {type:DataTypes.STRING,
+    primaryKey:true},
     dateCandidature: DataTypes.DATE,
     dateRelance: DataTypes.DATE,
     dureeRelance: DataTypes.INTEGER,
@@ -37,7 +34,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Candidature',
-    timestamps: false
+    timestamps: false,
+
   });
+Candidature.removeAttribute("id");
+console.log(Candidature.rawAttributes)
   return Candidature;
 };

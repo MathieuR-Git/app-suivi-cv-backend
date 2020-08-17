@@ -44,7 +44,7 @@ router.post("/candidature",(req,response)=>{
       idOffre: req.body.idOffre,
       dateCandidature:req.body.dateCandidature,
       statut:req.body.statut})
-      .then(candidatureCree=>response.send(req.body))
+      .then(candidatureCree=>response.send(candidatureCree))
       .catch(error=>
       response.send(error));
   }
@@ -55,7 +55,7 @@ router.post("/candidature",(req,response)=>{
       dateCandidature:req.body.dateCandidature,
       dureeRelance: req.body.dureeRelance,
       statut:req.body.statut})
-      .then(candidatureCree=>response.send(req.body))
+      .then(candidatureCree=>response.send(candidatureCree))
       .catch(error=>
       response.send(error));
   }

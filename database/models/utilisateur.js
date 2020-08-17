@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.Utilisateur.hasOne(models.DelaiFixe);
       models.Utilisateur.hasMany(models.Connexion);
-      models.Utilisateur.hasMany(models.Candidature);
+      models.Utilisateur.hasMany(models.Candidature,{
+        foreignKey:'idUtilisateur'
+      });
     }
   };
   Utilisateur.init({

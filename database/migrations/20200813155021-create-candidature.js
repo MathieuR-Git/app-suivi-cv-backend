@@ -40,12 +40,7 @@ module.exports = {
       relance: {
         type: Sequelize.BOOLEAN
       }
-    }) .then(() => {
-      return queryInterface.addConstraint('Candidatures', ['idUtilisateur', 'idOffre'], {
-        type: 'primary key',
-        name: 'Candidatures_pkey'
-      });
-    });
+    })
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Candidatures');
