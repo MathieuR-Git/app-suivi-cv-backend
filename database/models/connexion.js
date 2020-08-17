@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Connexion',
+    timestamps: false
   });
   return Connexion;
 };

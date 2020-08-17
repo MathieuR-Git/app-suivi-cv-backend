@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'DelaiFixe',
+    timestamps: false
   });
   return DelaiFixe;
 };

@@ -11,14 +11,14 @@ create table "Utilisateurs" (
 id serial primary key,
 nom text not null,
 email text not null unique,
-delaiFixe boolean not null,
-motDePasse text not null	
+"delaiFixe" boolean not null,
+"motDePasse" text not null	
 );
 
 create table "DelaiFixes"(
 	id serial primary key,
-	idUtilisateur int not null unique,
-	foreign key (idUtilisateur) references "Utilisateurs"(id),
+	"idUtilisateur" int not null unique,
+	foreign key ("idUtilisateur") references "Utilisateurs"(id),
 	duree int not null
 	
 );
@@ -26,25 +26,25 @@ create table "DelaiFixes"(
 create table "Offres"(
 	id text primary key,
 	poste text not null,
-	nomEntreprise text not null,
+	"nomEntreprise" text not null,
 	url text not null,
-	nomContact text,
-	fonctionContact text,
-	telContact text,
-	emailContact text
+	"nomContact" text,
+	"fonctionContact" text,
+	"telContact" text,
+	"emailContact" text
 );
 
 create table "Candidatures"(
-	idUtilisateur int not null,
-	idOffre text not null,
-	dateCandidature date not null,
-	dateRelance date,
-	dureeRelance int,
+	"idUtilisateur" int not null,
+	"idOffre" text not null,
+	"dateCandidature" date not null,
+	"dateRelance" date,
+	"dureeRelance" int,
 	statut text not null,
 	relance boolean default false,
-	foreign key (idUtilisateur) references "Utilisateurs"(id),
-	foreign key(idOffre) references "Offres"(id),
-	primary key(idUtilisateur, idOffre)
+	foreign key ("idUtilisateur") references "Utilisateurs"(id),
+	foreign key("idOffre") references "Offres"(id),
+	primary key("idUtilisateur", "idOffre")
 );
 
 create table "Competences"(
@@ -53,32 +53,32 @@ create table "Competences"(
 );
 
 create table "CompOffs"(
-	idCompetence int not null,
-	idOffre text not null,
+	"idCompetence" int not null,
+	"idOffre" text not null,
 	niveau text not null,
-	foreign key(idOffre) references "Offres"(id),
-	foreign key(idCompetence) references "Competences"(id),
-	primary key(idCompetence, idOffre)
+	foreign key("idOffre") references "Offres"(id),
+	foreign key("idCompetence") references "Competences"(id),
+	primary key("idCompetence", "idOffre")
 );
 create table "Connexions"(
-	idConnexion serial primary key,
-	idUtilisateur int,
-	dateConnexion date not null,
-	foreign key(idUtilisateur) references "Utilisateurs"(id)
+	"idConnexion" serial primary key,
+	"idUtilisateur" int,
+	"dateConnexion" date not null,
+	foreign key("idUtilisateur") references "Utilisateurs"(id)
 );
 
 create table "Entretiens"(
-	idEntretien serial primary key,
-	idUtilisateur int,
-	idOffre text,
-	dateEntretien date not null,
-	typeEntretien text not null,
-	foreign key(idUtilisateur,idOffre) references "Candidatures"(idUtilisateur,idOffre)
+	"idEntretien" serial primary key,
+	"idUtilisateur" int,
+	"idOffre" text,
+	"dateEntretien" date not null,
+	"typeEntretien" text not null,
+	foreign key("idUtilisateur","idOffre") references "Candidatures"("idUtilisateur","idOffre")
 );
 
 
 
-INSERT INTO "Utilisateurs"(nom, email, delaiFixe, motDePasse) VALUES  
+INSERT INTO "Utilisateurs"(nom, email, "delaiFixe", "motDePasse") VALUES  
  ('Dorothée Pottier', 'marcel.mahe@noos.fr', '0', '9UR>q&SUzZxxG&LN}'), 
  ('Noémi Guichard-Meunier', 'ballain@laporte.com', '0', '=s.4cw8jnYToa2y)6j='), 
  ('Bertrand Joubert', 'rodriguez.christelle@sfr.fr', '0', '=vnR]-X}XCO'), 
@@ -91,7 +91,7 @@ INSERT INTO "Utilisateurs"(nom, email, delaiFixe, motDePasse) VALUES
  ('Patrick de Delattre', 'dallain@mercier.fr', '1', 'lvTweO[CK=WOGc:Qrf');
 
 
-INSERT INTO "DelaiFixes" (idUtilisateur,duree) VALUES  
+INSERT INTO "DelaiFixes" ("idUtilisateur",duree) VALUES  
 ('5','10'), 
 ('10','15'), 
 ('4','10') ;
@@ -101,7 +101,7 @@ INSERT INTO "Offres" VALUES
 ('8208c06de074317f97759a8a89273594', 'Etancheur', 'Albert', 'http://chauvet.org/consecteturmolestiaeetoptiodistinctio.html','andré simon','Directeur des ressources humaines','0708091011','andre.simon@chauvet.org');
 
 
-INSERT INTO "Offres" (id, poste, nomEntreprise, url) VALUES  
+INSERT INTO "Offres" (id, poste, "nomEntreprise", url) VALUES  
  ('97eb48793051342b86ef121e022c037e', 'Chef des ventes', 'Lejeune', 'http://www.rolland.fr/'), 
  ('170730306317311d81b9d16c7aa2b1fe', 'Plasticien', 'Lefebvre SA', 'https://www.marin.com/commodilaboriosamautetutetmollitiaautnulla'), 
  ('742fef19d5d431c2b79475b1289444ce', 'Testeur informatique', 'Fleury Gilbert SARL', 'http://www.michaud.fr/optiominusetautincidunt'), 
@@ -211,13 +211,13 @@ Insert into "Competences"(intitule) Values
 ( 'Maitrise de excell '),
 ( 'Autonomie ');
 
-Insert into "CompOffs"(idCompetence,idOffre,niveau) Values
+Insert into "CompOffs"("idCompetence","idOffre",niveau) Values
 ('2','1a71489e9da93bb69fe1d0a84d471627','expert'),
 ( '5 ', '61b81235829230829ed825ecd05f30a9','débutant'),
 ( '3', 'a7776fbd8a3f31539293f6c98c8c03e0' ,'confirmé'),
 ( '4 ','f1242eef9a11332693ad4537695f16ed', 'débutant');
 
-Insert into "Candidatures"(idUtilisateur,idOffre,dateCandidature,dateRelance,dureeRelance,Statut) Values
+Insert into "Candidatures"("idUtilisateur","idOffre","dateCandidature","dateRelance","dureeRelance",Statut) Values
 ('5','1a71489e9da93bb69fe1d0a84d471627','14/07/2020','24/07/2020','10','en attente'),
 ('2','61b81235829230829ed825ecd05f30a9','8/07/2020','23/07/2020','15','accepté'),
 ('4','61b81235829230829ed825ecd05f30a9','6/07/2020','16/07/2020','10','refusé'),
@@ -225,12 +225,12 @@ Insert into "Candidatures"(idUtilisateur,idOffre,dateCandidature,dateRelance,dur
 ('8','f1242eef9a11332693ad4537695f16ed','13/06/2020','28/06/2020','15','refusé');
 
 
-INSERT INTO "Connexions"(idUtilisateur,dateConnexion) values
+INSERT INTO "Connexions"("idUtilisateur","dateConnexion") values
 ('1','25/06/2020'),
 ('1','16/07/2020'),
 ('4','15/07/2020');
 
-INSERT INTO "Entretiens"(idUtilisateur,idOffre,dateEntretien,typeEntretien) values
+INSERT INTO "Entretiens"("idUtilisateur","idOffre","dateEntretien","typeEntretien") values
 ('8','f1242eef9a11332693ad4537695f16ed','29/06/2020','telephonique'),
 ('2','61b81235829230829ed825ecd05f30a9','25/07/2020','individuel');
 
@@ -239,9 +239,9 @@ INSERT INTO "Entretiens"(idUtilisateur,idOffre,dateEntretien,typeEntretien) valu
 
 create or replace function change_delai_fixe() returns trigger as $change_delai_fixe$
 begin 
-if new.delaiFixe=false then
+if new."delaiFixe"=false then
 delete from "DelaiFixes"
-where idUtilisateur= new.id;
+where "idUtilisateur"= new.id;
 end if;
 return null;
 end;
@@ -259,8 +259,8 @@ drop function if exists change_duree_delai_fixe();
 create or replace function change_duree_delai_fixe() returns trigger as $change_duree_delai_fixe$
 begin 
 update  "Candidatures"
-set dureeRelance=new.duree , dateRelance= dateCandidature+(new.duree* interval '1 day')
-where idUtilisateur=new.idUtilisateur;
+set "dureeRelance"=new.duree , "dateRelance"= "dateCandidature"+(new.duree* interval '1 day')
+where "idUtilisateur"=new."idUtilisateur";
 return null;
 end;
 $change_duree_delai_fixe$ language plpgsql;
@@ -274,10 +274,10 @@ create or replace function calc_date_relance() returns trigger as $calc_date_rel
 begin 
 if 
 /* si je n'ai pas de duree de relance cela prend notre durée de relance fixe*/
-new.dureeRelance is null then
-new.dureeRelance:=(select duree from "delaiFixes" where idUtilisateur= new.idUtilisateur);
+new."dureeRelance" is null then
+new."dureeRelance":=(select duree from "delaiFixes" where "idUtilisateur"= "new.idUtilisateur");
 end if;
-new.dateRelance:= new.dateCandidature+(new.DureeRelance*interval'1 day');
+new."dateRelance":= new."dateCandidature"+("new.DureeRelance"*interval'1 day');
 return new;
 end;
 $calc_date_relance$ language plpgsql;

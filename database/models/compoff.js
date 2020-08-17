@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'CompOff',
+    timestamps: false
   });
   return CompOff;
 };

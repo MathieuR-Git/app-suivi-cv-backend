@@ -14,11 +14,13 @@ module.exports = (sequelize, DataTypes) => {
      models.Candidature.hasOne(models.Entretien);
       models.Candidature.belongsTo(models.Offre,{
         foreignKey:{
+           name:'idOffre',
           allowNull:false
         }
       });
       models.Candidature.belongsTo(models.Utilisateur,{
         foreignKey:{
+          name:'idUtilisateur',
           allowNull:false
         }
       });
@@ -35,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Candidature',
+    timestamps: false
   });
   return Candidature;
 };
