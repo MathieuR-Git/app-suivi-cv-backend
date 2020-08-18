@@ -87,7 +87,8 @@ INSERT INTO "Utilisateurs"(nom, email, "delaiFixe", "motDePasse") VALUES
  ('Grégoire Colas-Cousin', 'alphonse.grondin@dupont.fr', '0', 'YygP>=ENm'), 
  ('Olivie Charrier', 'susan.olivier@garcia.com', '0', 'sbV&iyNui8]>i&8<oV8'), 
  ('Rémy Le Wagner', 'antoine.turpin@allard.fr', '0', 'oZ=79n#\=7F|$j[r2`C9'), 
- ('Patrick de Delattre', 'dallain@mercier.fr', '1', 'lvTweO[CK=WOGc:Qrf');
+ ('Patrick de Delattre', 'dallain@mercier.fr', '1', 'lvTweO[CK=WOGc:Qrf'),
+ ('John Doe', 'john.doe@gmail.com', '1', '$2b$10$zAbl51I4a6E4E44CL8jJN.TlNBIcEnTS.jAAcMEJ0r73XTV8vxBhG');
 
 
 INSERT INTO "DelaiFixes" ("idUtilisateur",duree) VALUES  
@@ -220,8 +221,8 @@ Insert into "Candidatures"("idUtilisateur","idOffre","dateCandidature","dateRela
 ('5','1a71489e9da93bb69fe1d0a84d471627','14/07/2020','24/07/2020','10','en attente'),
 ('2','61b81235829230829ed825ecd05f30a9','8/07/2020','23/07/2020','15','accepté'),
 ('4','61b81235829230829ed825ecd05f30a9','6/07/2020','16/07/2020','10','refusé'),
-('8','a7776fbd8a3f31539293f6c98c8c03e0','18/07/2020','28/07/2020','10','en attente'),
-('8','f1242eef9a11332693ad4537695f16ed','13/06/2020','28/06/2020','15','refusé');
+('11','a7776fbd8a3f31539293f6c98c8c03e0','18/07/2020','28/07/2020','10','en attente'),
+('11','f1242eef9a11332693ad4537695f16ed','13/06/2020','28/08/2020','15','refusé');
 
 
 INSERT INTO "Connexions"("idUtilisateur","dateConnexion") values
@@ -230,7 +231,7 @@ INSERT INTO "Connexions"("idUtilisateur","dateConnexion") values
 ('4','15/07/2020');
 
 INSERT INTO "Entretiens"("idUtilisateur","idOffre","dateEntretien","typeEntretien") values
-('8','f1242eef9a11332693ad4537695f16ed','29/06/2020','telephonique'),
+('11','f1242eef9a11332693ad4537695f16ed','29/06/2020','telephonique'),
 ('2','61b81235829230829ed825ecd05f30a9','25/07/2020','individuel');
 
 /* supprime la ligne d'un utilisateur dans delai fixe si il passe d'un delai fixe a un delai flexible*/

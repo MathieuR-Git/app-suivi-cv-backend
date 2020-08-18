@@ -7,7 +7,7 @@ app = express();
 const port = process.env.PORT || "3050";
 const cors = require("cors");
 const router = require("./router/router");
-const userRouter = require("./router/userRouter");
+//const userRouter = require("./router/userRouter");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 // app.use(express.static("../../public"));
 app.use(cors());
 app.use("/v1", router);
-app.use("/v1/auth", userRouter);
+//app.use("/v1/auth", userRouter);
 
 db.sequelize.sync().then(() =>{
 let server = app.listen(port, "localhost", () => {

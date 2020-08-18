@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const Queries = require("../db/queries");
 require("dotenv").config();
 
 const createToken = (user) => {
@@ -14,6 +15,25 @@ const createToken = (user) => {
   });
 };
 
+const checkToken = (req, res) => {
+  const headers = req.headers.authorization;
+  const token = headers.replace("Bearer ", "");
+
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.TOKEN, (err, decoded) => {
+      if (err) {
+        reject(err);
+      } else if (decoded) {
+        Queries.findUser(decoded).then((data) => {
+          resolve(res.status(200).json({ user: data }));
+        });
+      } else {
+        reject(new Error("Error occured during verifying token"));
+      }
+    });
+  });
+};
+
 const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.TOKEN, (err, decoded) => {
@@ -24,5 +44,6 @@ const verifyToken = (token) => {
 
 module.exports = {
   createToken,
+  // checkToken,
   verifyToken,
 };

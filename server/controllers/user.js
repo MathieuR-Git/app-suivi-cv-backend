@@ -1,41 +1,116 @@
-// const database = require("../db/db");
-const token = require("./token");
-const Queries = require("../db/queries");
+const Token = require("./token");
+const Bcrypt = require("../oldControllers/bcrypt");
+const Queries = require("./queries");
 
-const getUser = (request, response) => {
-  const headers = request.headers.authorization;
-  const myToken = headers.replace("Bearer ", "");
+//
+const signin = (request, response) => {
+  const userReq = request.body;
 
-  token.verifyToken(myToken).then((data) => {
-    Queries.findUser(data)
-      .then((userDatas) => {
-        response.status(200).json({ user: userDatas });
+  let myToken;
+  let user;
+  Queries.getUser(userReq.email)
+    .then((foundUser) => {
+      user = foundUser.dataValues;
+      return Bcrypt.checkPassword(userReq.motDePasse, foundUser.dataValues);
+    })
+    .then(() =>
+      Token.createToken(userReq).then((token) => {
+        myToken = token;
       })
-      .catch((err) => {
-        console.log("erreur : ", err);
-      });
-  });
+    )
+    .then(() =>
+      Queries.getOffersFromUser(user.id).then((result) => {
+        Queries.filterRelancesJobs(result).then((relancesToDo) => {
+          let userRes = {
+            id: user.id,
+            nom: user.nom,
+            email: user.email,
+            delaiFixe: user.delaifixe,
+            candidatures: result,
+            relances: relancesToDo,
+          };
+          response.status(200).json({ user: userRes, token: myToken });
+        });
+      })
+    )
+    .catch((err) =>
+      response.status(400).json({ error: "Le mot de passe ne correspond pas." })
+    );
 };
+
+//
+const signup = (request, response) => {
+  const user = request.body;
+  let tokenSave;
+
+  //check if delaiFixe exists
+  if (
+    !user.delaiFixe ||
+    user.delaiFixe === undefined ||
+    user.delaiFixe === null
+  ) {
+    user.delaiFixe = true;
+  }
+
+  Bcrypt.hashPassword(user.motDePasse)
+    .then((hashedPassword) => {
+      Queries.createUser(user, hashedPassword).then((data) => {
+        Token.createToken(user)
+          .then((token) => {
+            tokenSave = token;
+          })
+          .then(() => {
+            response.status(201).json({ user: data, token: tokenSave });
+          });
+      });
+    })
+    .catch((err) => {
+      err.code === "23505"
+        ? response
+            .status(400)
+            .json({ errorEmail: "Cette adresse email est déjà utilisée." })
+        : null;
+      console.log(err);
+    });
+};
+
 
 const editUser = (request, response) => {
   const headers = request.headers.authorization;
   const myToken = headers.replace("Bearer ", "");
   const userReq = request.body;
 
-  token
-    .verifyToken(myToken)
+  Token.verifyToken(myToken)
     .then(() => {
-      if (userReq.nom) {
-        Queries.editUserName(userReq);
-        response.status(200).json({ message: "Nom modifié" });
-      } else if (userReq.email) {
-        Queries.editUserEmail(userReq);
-        response.status(200).json({ message: "Email modifié" });
-      }
+      Queries.editUser(userReq, request.params.id);
+      response.status(200).json({
+        message: "Utilisateur modifié",
+      });
     })
     .catch((err) => {
       console.log("erreur : ", err);
     });
 };
 
-module.exports = { getUser, editUser };
+const deleteUser = (request, response) => {
+  const headers = request.headers.authorization;
+  const myToken = headers.replace("Bearer ", "");
+  const userId = request.params.id;
+
+  Token.verifyToken(myToken)
+    .then(() => {
+      Queries.deleteUser(userId).then(() =>
+        response.status(200).json({ message: "User deleted !" })
+      );
+    })
+    .catch((err) => {
+      console.log("erreur : ", err);
+    });
+};
+
+module.exports = {
+  signin,
+  signup,
+  editUser,
+  deleteUser,
+};
