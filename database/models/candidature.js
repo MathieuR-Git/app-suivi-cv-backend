@@ -37,6 +37,5 @@ module.exports = (sequelize, DataTypes) => {
 
   });
 Candidature.removeAttribute("id");
-console.log(Candidature.rawAttributes)
   return Candidature;
 };

@@ -24,13 +24,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   CompOff.init({
-    idCompetence: DataTypes.INTEGER,
-    idOffre: DataTypes.STRING,
+    idCompetence: {
+      type:DataTypes.INTEGER,
+    primaryKey:true},
+    idOffre:{type: DataTypes.STRING,
+    primaryKey:true},
     niveau: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'CompOff',
     timestamps: false
   });
+  CompOff.removeAttribute('id')
   return CompOff;
 };
