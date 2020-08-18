@@ -1,5 +1,5 @@
 drop table if exists "Utilisateurs"  cascade;
-drop table if exists "DelaiFixes" cascade;
+drop table if exists "DelaiFixes" cascade ;
 drop table if exists "Offres" cascade;
 drop table if exists "Candidatures" cascade;
 drop table if exists "Competences" cascade;
@@ -17,8 +17,8 @@ email text not null unique,
 
 create table "DelaiFixes"(
 	id serial primary key,
-	"idUtilisateur" int not null unique,
-	foreign key ("idUtilisateur") references "Utilisateurs"(id),
+	"idUtilisateur" int not null unique ,
+	foreign key ("idUtilisateur") references "Utilisateurs"(id) on delete cascade ,
 	duree int not null
 	
 );
@@ -35,14 +35,14 @@ create table "Offres"(
 );
 
 create table "Candidatures"(
-	"idUtilisateur" int not null,
-	"idOffre" text not null,
+	"idUtilisateur" int not null ,
+	"idOffre" text not null ,
 	"dateCandidature" date not null,
 	"dateRelance" date,
 	"dureeRelance" int,
 	statut text not null,
-	foreign key ("idUtilisateur") references "Utilisateurs"(id),
-	foreign key("idOffre") references "Offres"(id),
+	foreign key ("idUtilisateur") references "Utilisateurs"(id) on delete cascade,
+	foreign key("idOffre") references "Offres"(id) on delete cascade,
 	primary key("idUtilisateur", "idOffre")
 );
 
@@ -52,27 +52,27 @@ create table "Competences"(
 );
 
 create table "CompOffs"(
-	"idCompetence" int not null,
-	"idOffre" text not null,
+	"idCompetence" int not null ,
+	"idOffre" text not null ,
 	niveau text not null,
-	foreign key("idOffre") references "Offres"(id),
-	foreign key("idCompetence") references "Competences"(id),
+	foreign key("idOffre") references "Offres"(id) on delete cascade,
+	foreign key("idCompetence") references "Competences"(id) on delete cascade,
 	primary key("idCompetence", "idOffre")
 );
 create table "Connexions"(
 	"idConnexion" serial primary key,
 	"idUtilisateur" int,
 	"dateConnexion" date not null,
-	foreign key("idUtilisateur") references "Utilisateurs"(id)
+	foreign key("idUtilisateur") references "Utilisateurs"(id) on delete cascade
 );
 
 create table "Entretiens"(
-	"idEntretien" serial primary key,
-	"idUtilisateur" int,
+	"idEntretien" serial primary key ,
+	"idUtilisateur" int ,
 	"idOffre" text,
 	"dateEntretien" date not null,
 	"typeEntretien" text not null,
-	foreign key("idUtilisateur","idOffre") references "Candidatures"("idUtilisateur","idOffre")
+	foreign key("idUtilisateur","idOffre") references "Candidatures"("idUtilisateur","idOffre") on delete cascade
 );
 
 
