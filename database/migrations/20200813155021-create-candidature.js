@@ -36,9 +36,6 @@ module.exports = {
       statut: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      relance: {
-        type: Sequelize.BOOLEAN
       }
     })
   },

@@ -29,8 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     dateCandidature: DataTypes.DATE,
     dateRelance: DataTypes.DATE,
     dureeRelance: DataTypes.INTEGER,
-    statut: DataTypes.STRING,
-    relance: DataTypes.BOOLEAN
+    statut: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Candidature',

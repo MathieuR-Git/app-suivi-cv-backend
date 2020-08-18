@@ -41,7 +41,6 @@ create table "Candidatures"(
 	"dateRelance" date,
 	"dureeRelance" int,
 	statut text not null,
-	relance boolean default false,
 	foreign key ("idUtilisateur") references "Utilisateurs"(id),
 	foreign key("idOffre") references "Offres"(id),
 	primary key("idUtilisateur", "idOffre")
@@ -277,10 +276,11 @@ if
 new."dureeRelance" is null then
 new."dureeRelance":=(select duree from "delaiFixes" where "idUtilisateur"= new."idUtilisateur");
 end if;
+new."dateCandidature":= new."dateCandidature"+interval'1day';
 new."dateRelance":= new."dateCandidature"+(new."DureeRelance"*interval'1 day');
 return new;
 end;
 $calc_date_relance$ language plpgsql;
 
-create  trigger calc_date_relance before insert  on "Candidatures" for each row 
+create  trigger calc_date_relance before insert or update  on "Candidatures" for each row 
 execute procedure calc_date_relance();

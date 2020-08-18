@@ -60,4 +60,30 @@ router.post("/candidature",(req,response)=>{
       response.send(error));
   }
 });
+
+router.get("/mescandidatures/:id", (req, response) => {
+  db.Candidature.findAll({where :{idUtilisateur:req.params.id}, include: [db.Offre]})
+  .then((result) =>response.send(result))
+  .catch(error=>response.send(error));
+});
+
+router.put("/macandidature/:idUtilisateur/:idOffre",(req,response)=>{
+  db.Candidature.update({
+    dateCandidature:req.body.dateCandidature,
+    dureeRelance:req.body.dureeRelance,
+    statut:req.body.statut,
+  },{
+    where: {idUtilisateur:req.params.idUtilisateur,idOffre:req.params.idOffre}
+  })
+  .then(response.send("Candidature modifiée"))
+  .catch(error=>response.send(error));
+})
+
+router.get("/macandidature/:idUtilisateur/:idOffre", (req, response) => {
+  db.Candidature.findOne({where :{idUtilisateur:req.params.idUtilisateur, idOffre:req.params.idOffre}, include: [db.Offre]})
+  .then((result) =>response.send(result))
+  .catch(error=>response.send(error));
+});
+  
 module.exports = router;
+
