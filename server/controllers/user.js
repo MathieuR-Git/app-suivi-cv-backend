@@ -5,17 +5,17 @@ const Queries = require("./queries");
 //
 const signin = (request, response) => {
   const userReq = request.body;
-
-  let myToken;
+  let Token;
   let user;
   Queries.getUser(userReq.email)
     .then((foundUser) => {
       user = foundUser.dataValues;
+
       return Bcrypt.checkPassword(userReq.motDePasse, foundUser.dataValues);
     })
     .then(() =>
       Token.createToken(userReq).then((token) => {
-        myToken = token;
+        Token = token;
       })
     )
     .then(() =>
@@ -29,7 +29,7 @@ const signin = (request, response) => {
             candidatures: result,
             relances: relancesToDo,
           };
-          response.status(200).json({ user: userRes, token: myToken });
+          response.status(200).json({ user: userRes, token: Token });
         });
       })
     )
@@ -74,7 +74,37 @@ const signup = (request, response) => {
     });
 };
 
+//
+const getUser = (request, response) => {
+  const headers = request.headers.authorization;
+  const myToken = headers.replace("Bearer ", "");
+  let user;
 
+  Token.verifyToken(myToken).then((data) => {
+    Queries.getUser(data.email)
+      .then((foundUser) => {
+        user = foundUser.dataValues;
+      })
+      .then(() =>
+        Queries.getOffersFromUser(user.id).then((result) => {
+          Queries.filterRelancesJobs(result).then((relancesToDo) => {
+            let userRes = {
+              id: user.id,
+              nom: user.nom,
+              email: user.email,
+              delaiFixe: user.delaifixe,
+              candidatures: result,
+              relances: relancesToDo,
+            };
+            response.status(200).json({ user: userRes });
+          });
+        })
+      )
+      .catch((err) => console.log(err));
+  });
+};
+
+//
 const editUser = (request, response) => {
   const headers = request.headers.authorization;
   const myToken = headers.replace("Bearer ", "");
@@ -92,6 +122,7 @@ const editUser = (request, response) => {
     });
 };
 
+//
 const deleteUser = (request, response) => {
   const headers = request.headers.authorization;
   const myToken = headers.replace("Bearer ", "");
@@ -111,6 +142,7 @@ const deleteUser = (request, response) => {
 module.exports = {
   signin,
   signup,
+  getUser,
   editUser,
   deleteUser,
 };
