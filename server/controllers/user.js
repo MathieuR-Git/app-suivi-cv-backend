@@ -5,17 +5,17 @@ const Queries = require("./queries");
 //
 const signin = (request, response) => {
   const userReq = request.body;
-  let Token;
+  console.log(userReq);
+  let myToken;
   let user;
   Queries.getUser(userReq.email)
     .then((foundUser) => {
       user = foundUser.dataValues;
-
       return Bcrypt.checkPassword(userReq.motDePasse, foundUser.dataValues);
     })
     .then(() =>
-      Token.createToken(userReq).then((token) => {
-        Token = token;
+      Token.createToken(user).then((token) => {
+        myToken = token;
       })
     )
     .then(() =>
@@ -29,7 +29,8 @@ const signin = (request, response) => {
             candidatures: result,
             relances: relancesToDo,
           };
-          response.status(200).json({ user: userRes, token: Token });
+
+          response.status(200).json({ user: userRes, token: myToken });
         });
       })
     )
