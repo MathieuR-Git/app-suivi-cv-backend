@@ -40,6 +40,7 @@ create table "Candidatures"(
 	"dateCandidature" date not null,
 	"dateRelance" date,
 	"dureeRelance" int,
+	"motifRefus" text,
 	statut text not null,
 	foreign key ("idUtilisateur") references "Utilisateurs"(id) on delete cascade,
 	foreign key("idOffre") references "Offres"(id) on delete cascade,
