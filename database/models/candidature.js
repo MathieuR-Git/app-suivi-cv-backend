@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     dateCandidature: DataTypes.DATE,
     dateRelance: DataTypes.DATE,
     dureeRelance: DataTypes.INTEGER,
+    motifRefus:DataTypes.STRING,
     statut: DataTypes.STRING
   }, {
     sequelize,

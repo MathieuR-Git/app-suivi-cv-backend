@@ -33,6 +33,9 @@ module.exports = {
       dureeRelance: {
         type: Sequelize.INTEGER
       },
+      motifRefus:{
+        type:Sequelize.STRING
+      },
       statut: {
         allowNull: false,
         type: Sequelize.STRING
