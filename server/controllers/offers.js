@@ -7,9 +7,13 @@ const createJob = (request, response) => {
 
   Token.verifyToken(myToken)
     .then(() => {
-      Queries.createOffer(request.body).then((candidatureCree) =>
-        response.status(200).send(candidatureCree)
-      );
+      Queries.createOffer(request.body)
+        .then((candidatureCree) => response.status(200).send(candidatureCree))
+        .catch((err) =>
+          response
+            .status(400)
+            .json({ error: "Erreur lors de la création de la candidature." })
+        );
     })
     .catch((error) => response.status(400).send(error));
 };
@@ -20,9 +24,13 @@ const getJobs = (request, response) => {
 
   Token.verifyToken(myToken)
     .then(() => {
-      Queries.getOffersFromUser(request.params.id).then((result) =>
-        response.send(result)
-      );
+      Queries.getOffersFromUser(request.params.id)
+        .then((result) => response.send(result))
+        .catch((err) =>
+          response
+            .status(400)
+            .json({ error: "Erreur lors de la récupération des données." })
+        );
     })
     .catch((err) => console.log(err));
 };
@@ -36,7 +44,13 @@ const getAJobFromUser = (request, response) => {
       Queries.getAnOfferFromUser(
         request.params.idUtilisateur,
         request.params.idOffre
-      ).then((result) => response.send(result));
+      )
+        .then((result) => response.send(result))
+        .catch((err) =>
+          response
+            .status(400)
+            .json({ error: "Erreur lors de la récupération des données." })
+        );
     })
     .catch((err) => console.log(err));
 };
@@ -51,7 +65,13 @@ const editAnOffer = (request, response) => {
         request.body,
         request.params.idUtilisateur,
         request.params.idOffre
-      ).then((result) => response.send(result));
+      )
+        .then((result) => response.send(result))
+        .catch((err) =>
+          response
+            .status(400)
+            .json({ error: "Erreur lors de l'édition des données." })
+        );
     })
     .catch((err) => console.log(err));
 };

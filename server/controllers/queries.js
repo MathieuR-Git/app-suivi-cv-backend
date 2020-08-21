@@ -47,10 +47,8 @@ const getAnOfferFromUser = (idUser, idOffer) => {
 };
 
 const createOffer = (data) => {
-  
   return new Promise((resolve, reject) => {
-    console.log(data);
-    if (data.dureeRelance == null || data.dureeRelance == "" ) {
+    if (data.dureeRelance == null || data.dureeRelance == "") {
       db.Candidature.create({
         idUtilisateur: data.idUtilisateur,
         idOffre: data.idOffre,
@@ -60,7 +58,6 @@ const createOffer = (data) => {
         .then((candidatureCree) => resolve(candidatureCree))
         .catch((error) => reject(error));
     } else {
-      
       db.Candidature.create({
         idUtilisateur: data.idUtilisateur,
         idOffre: data.idOffre,
@@ -123,9 +120,19 @@ const deleteUser = (id) => {
 const filterRelancesJobs = (candidaturesArray) => {
   let date = new Date().toISOString().slice(0, 10);
   let relances = [];
+  let test = 0;
   return new Promise((resolve) => {
-    candidaturesArray.map((candidature) =>
-      candidature.dateRelance >= date ? relances.push(candidature) : ""
+    const candidature = candidaturesArray.filter(function (candidature) {
+      return (
+        candidature.dataValues.statut !== "Refusé" &&
+        candidature.dataValues.statut !== "refusé"
+      );
+    });
+
+    candidature.map((filteredCandidature) =>
+      filteredCandidature.dataValues.dateRelance >= date
+        ? relances.push(filteredCandidature.dataValues)
+        : ""
     );
     resolve(relances);
   });
