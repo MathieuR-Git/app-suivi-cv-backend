@@ -155,7 +155,7 @@ const filterRelancesJobs = (candidaturesArray) => {
     });
 
     candidature.map((filteredCandidature) =>
-      filteredCandidature.dataValues.dateRelance <= date
+      filteredCandidature.dataValues.dateRelance >= date
         ? relances.push(filteredCandidature.dataValues)
         : ""
     );
