@@ -36,12 +36,14 @@ const signin = (request, response) => {
           .catch((err) =>
             response
               .status(400)
-              .json({ error: "Erreur lors de la récupération des données." })
+              .json({ errorDatas: "Erreur lors de la récupération des données." })
           );
       })
     )
     .catch((err) =>
-      response.status(400).json({ error: "Le mot de passe ne correspond pas." })
+      response
+        .status(400)
+        .json({ errorPassword: "Le mot de passe ne correspond pas." })
     );
 };
 

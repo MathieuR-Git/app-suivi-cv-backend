@@ -46,7 +46,7 @@ const getAnOfferFromUser = (idUser, idOffer) => {
   });
 };
 
-const createOffer = (data) => {
+const createCandidature = (data) => {
   return new Promise((resolve, reject) => {
     if (data.dureeRelance == null || data.dureeRelance == "") {
       db.Candidature.create({
@@ -68,6 +68,31 @@ const createOffer = (data) => {
         .then((candidatureCree) => resolve(candidatureCree))
         .catch((error) => reject(error));
     }
+  });
+};
+
+const createOffer = (data) => {
+  return new Promise((resolve, reject) => {
+    db.Offre.create({
+      id: data.idOffre,
+      poste: data.poste,
+      nomEntreprise: data.nomEntreprise,
+      url: data.url,
+      nomContact: data.nomContact,
+      fonctionContact: data.fonctionContact,
+      telContact: data.telContact,
+      emailContact: data.emailContact,
+    })
+      .then((offreCree) => resolve(offreCree))
+      .catch((error) => reject(error));
+  });
+};
+
+const findOffer = (data) => {
+  return new Promise((resolve, reject) => {
+    db.Offre.findOne({ where: { id: data.idOffre } })
+      .then((result) => resolve(result))
+      .catch((error) => reject(error));
   });
 };
 
@@ -130,7 +155,7 @@ const filterRelancesJobs = (candidaturesArray) => {
     });
 
     candidature.map((filteredCandidature) =>
-      filteredCandidature.dataValues.dateRelance >= date
+      filteredCandidature.dataValues.dateRelance <= date
         ? relances.push(filteredCandidature.dataValues)
         : ""
     );
@@ -143,6 +168,8 @@ module.exports = {
   getUser,
   editUser,
   deleteUser,
+  createCandidature,
+  findOffer,
   createOffer,
   getOffersFromUser,
   getAnOfferFromUser,

@@ -7,13 +7,29 @@ const createJob = (request, response) => {
 
   Token.verifyToken(myToken)
     .then(() => {
-      Queries.createOffer(request.body)
-        .then((candidatureCree) => response.status(200).send(candidatureCree))
-        .catch((err) =>
-          response
-            .status(400)
-            .json({ error: "Erreur lors de la création de la candidature." })
-        );
+      Queries.findOffer(request.body).then((answer) =>
+        answer
+          ? Queries.createCandidature(request.body)
+              .then((candidatureCree) =>
+                response.status(200).send(candidatureCree)
+              )
+              .catch((err) =>
+                response.status(400).json({
+                  error: "Erreur lors de la création de la candidature.",
+                })
+              )
+          : Queries.createOffer(request.body).then(() =>
+              Queries.createCandidature(request.body)
+                .then((candidatureCree) =>
+                  response.status(200).send(candidatureCree)
+                )
+                .catch((err) =>
+                  response.status(400).json({
+                    error: "Erreur lors de la création de la candidature.",
+                  })
+                )
+            )
+      );
     })
     .catch((error) => response.status(400).send(error));
 };
