@@ -20,18 +20,28 @@ const createJob = (request, response) => {
               )
           : Queries.createOffer(request.body).then(() =>
               Queries.createCandidature(request.body)
-                .then((candidatureCree) =>
-                  response.status(200).send(candidatureCree)
+                .then((data) =>
+                  Queries.getAnOfferFromUser(data.idUtilisateur, data.idOffre)
+                    .then(
+                      (result) =>
+                        console.log(result) +
+                        response.status(200).send(result.dataValues)
+                    )
+                    .catch((err) =>
+                      response.status(403).json({
+                        error: "Erreur lors de la création de la candidature.",
+                      })
+                    )
                 )
                 .catch((err) =>
-                  response.status(400).json({
+                  response.status(402).json({
                     error: "Erreur lors de la création de la candidature.",
                   })
                 )
             )
       );
     })
-    .catch((error) => response.status(400).send(error));
+    .catch((error) => response.status(401).send(error));
 };
 
 const getJobs = (request, response) => {
@@ -92,4 +102,9 @@ const editAnOffer = (request, response) => {
     .catch((err) => console.log(err));
 };
 
-module.exports = { createJob, getJobs, getAJobFromUser, editAnOffer };
+module.exports = {
+  createJob,
+  getJobs,
+  getAJobFromUser,
+  editAnOffer,
+};

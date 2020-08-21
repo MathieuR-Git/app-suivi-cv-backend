@@ -10,12 +10,12 @@ router.post("/signup", User.signup); // ✔
 router.post("/signin", User.signin); // ✔
 router.put("/utilisateur/:id", User.editUser); // ✔
 router.delete("/utilisateur/:id", User.deleteUser); // ✔
-router.post("/checkToken", User.getUser);
+router.post("/checkToken", User.getUser); // ✔
 
 /**
  * Offers
  */
-router.post("/candidature", Offers.createJob); // X   -   Ajouter en bdd les infos du postulat
+router.post("/candidature", Offers.createJob); // ✔
 router.get("/macandidature/:idUtilisateur/:idOffre", Offers.getAJobFromUser); // ✔
 router.get("/mescandidatures/:id", Offers.getJobs); // ✔
 router.put("/macandidature/:idUtilisateur/:idOffre", Offers.editAnOffer); // X
