@@ -47,8 +47,10 @@ const getAnOfferFromUser = (idUser, idOffer) => {
 };
 
 const createOffer = (data) => {
+  
   return new Promise((resolve, reject) => {
-    if (data.dureeRelance == null || data.dureeRelance == "") {
+    console.log(data);
+    if (data.dureeRelance == null || data.dureeRelance == "" ) {
       db.Candidature.create({
         idUtilisateur: data.idUtilisateur,
         idOffre: data.idOffre,
@@ -58,6 +60,7 @@ const createOffer = (data) => {
         .then((candidatureCree) => resolve(candidatureCree))
         .catch((error) => reject(error));
     } else {
+      
       db.Candidature.create({
         idUtilisateur: data.idUtilisateur,
         idOffre: data.idOffre,

@@ -254,7 +254,7 @@ execute procedure change_delai_fixe();
 
 
 /*change les dates de relance + durée de relance des candidatures d'un utilisteur quand il change son delai fixe*/
-drop trigger if exists change_duree_delai_fixe on "delaiFixes";
+drop trigger if exists change_duree_delai_fixe on "DelaiFixes";
 drop function if exists change_duree_delai_fixe();
 
 create or replace function change_duree_delai_fixe() returns trigger as $change_duree_delai_fixe$
@@ -276,10 +276,10 @@ begin
 if 
 /* si je n'ai pas de duree de relance cela prend notre durée de relance fixe*/
 new."dureeRelance" is null then
-new."dureeRelance":=(select duree from "delaiFixes" where "idUtilisateur"= new."idUtilisateur");
+new."dureeRelance":=(select duree from "DelaiFixes" where "idUtilisateur"= new."idUtilisateur");
 end if;
 new."dateCandidature":= new."dateCandidature"+interval'1day';
-new."dateRelance":= new."dateCandidature"+(new."DureeRelance"*interval'1 day');
+new."dateRelance":= new."dateCandidature"+(new."dureeRelance"*interval'1 day');
 return new;
 end;
 $calc_date_relance$ language plpgsql;
