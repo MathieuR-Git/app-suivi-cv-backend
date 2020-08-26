@@ -26,7 +26,7 @@ const signin = (request, response) => {
               id: user.id,
               nom: user.nom,
               email: user.email,
-              delaiFixe: user.delaifixe,
+              delaiFixe: user.delaiFixe,
               candidatures: result,
               relances: relancesToDo,
             };
