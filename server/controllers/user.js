@@ -28,7 +28,7 @@ const signin = (request, response) => {
               nom: user.nom,
               email: user.email,
               delaiFixe: user.delaiFixe,
-              dureeDelaiFixe:user.DelaiFixe,
+              dureeDelaiFixe:user.DelaiFixe.dureegit ,
               candidatures: result,
               relances: relancesToDo,
             };
