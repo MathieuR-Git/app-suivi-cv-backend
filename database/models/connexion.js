@@ -12,9 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Connexion.belongsTo(models.Utilisateur,{
-        foreignKey:{
-          allowNull:false
-        }
+        foreignKey:"idUtilisateur"
       });
     }
   };

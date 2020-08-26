@@ -11,6 +11,7 @@ const signin = (request, response) => {
   Queries.getUser(userReq.email)
     .then((foundUser) => {
       user = foundUser.dataValues;
+      console.log(user)
       return Bcrypt.checkPassword(userReq.motDePasse, foundUser.dataValues);
     })
     .then(() =>
@@ -27,6 +28,7 @@ const signin = (request, response) => {
               nom: user.nom,
               email: user.email,
               delaiFixe: user.delaiFixe,
+              dureeDelaiFixe:user.DelaiFixe,
               candidatures: result,
               relances: relancesToDo,
             };

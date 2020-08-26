@@ -15,7 +15,7 @@ const createUser = (data, pwd) => {
 
 const getUser = (email) => {
   return new Promise((resolve, reject) => {
-    db.Utilisateur.findOne({ where: { email: email } })
+    db.Utilisateur.findOne({ where: { email: email },include:[db.DelaiFixe] })
       .then((result) => resolve(result))
       .catch((error) => reject(error));
   });
