@@ -5,13 +5,11 @@ const Queries = require("./queries");
 //
 const signin = (request, response) => {
   const userReq = request.body;
-
   let myToken;
   let user;
   Queries.getUser(userReq.email)
     .then((foundUser) => {
       user = foundUser.dataValues;
-      console.log(user)
       return Bcrypt.checkPassword(userReq.motDePasse, foundUser.dataValues);
     })
     .then(() =>
@@ -28,17 +26,18 @@ const signin = (request, response) => {
               nom: user.nom,
               email: user.email,
               delaiFixe: user.delaiFixe,
-              dureeDelaiFixe:user.DelaiFixe.dureegit ,
               candidatures: result,
               relances: relancesToDo,
             };
-
+            if (user.DelaiFixe) {
+              userRes.dureeDelaiFixe = user.DelaiFixe.duree;
+            }
             response.status(200).json({ user: userRes, token: myToken });
           })
           .catch((err) =>
-            response
-              .status(400)
-              .json({ errorDatas: "Erreur lors de la récupération des données." })
+            response.status(400).json({
+              errorDatas: "Erreur lors de la récupération des données.",
+            })
           );
       })
     )
@@ -86,7 +85,7 @@ const signup = (request, response) => {
 };
 
 //
-const getUser = (request, response) => {
+const getUserFromToken = (request, response) => {
   const headers = request.headers.authorization;
   const myToken = headers.replace("Bearer ", "");
   let user;
@@ -104,10 +103,13 @@ const getUser = (request, response) => {
                 id: user.id,
                 nom: user.nom,
                 email: user.email,
-                delaiFixe: user.delaifixe,
+                delaiFixe: user.delaiFixe,
                 candidatures: result,
                 relances: relancesToDo,
               };
+              if (user.DelaiFixe) {
+                userRes.dureeDelaiFixe = user.DelaiFixe.duree;
+              }
               response.status(200).json({ user: userRes });
             })
             .catch((err) =>
@@ -170,7 +172,7 @@ const deleteUser = (request, response) => {
 module.exports = {
   signin,
   signup,
-  getUser,
+  getUserFromToken,
   editUser,
   deleteUser,
 };

@@ -10,7 +10,7 @@ router.post("/signup", User.signup); // ✔
 router.post("/signin", User.signin); // ✔
 router.put("/utilisateur/:id", User.editUser); // ✔
 router.delete("/utilisateur/:id", User.deleteUser); // ✔
-router.post("/checkToken", User.getUser); // ✔
+router.post("/checkToken", User.getUserFromToken); // ✔
 
 /**
  * Offers
