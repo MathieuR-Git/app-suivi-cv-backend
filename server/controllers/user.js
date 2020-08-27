@@ -1,5 +1,5 @@
 const Token = require("./token");
-const Bcrypt = require("../oldControllers/bcrypt");
+const Bcrypt = require("./bcrypt");
 const Queries = require("./queries");
 
 //
